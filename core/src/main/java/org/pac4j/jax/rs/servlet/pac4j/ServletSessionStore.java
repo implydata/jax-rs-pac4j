@@ -28,18 +28,14 @@ public class ServletSessionStore implements SessionStore {
         this.httpSession = httpSession;
     }
 
-    public HttpSession getHttpSession(final WebContext context) {
+    public HttpSession getHttpSession(WebContext context, boolean createSession) {
         assert context instanceof ServletJaxRsContext;
-        try {
-            return ((ServletJaxRsContext) context).getRequest().getSession();
-        } catch (final IllegalStateException e) {
-            return null;
-        }
+        return ((ServletJaxRsContext) context).getRequest().getSession(createSession);
     }
 
     @Override
     public Optional<Object> get(final WebContext context, final String key) {
-        final HttpSession session = getHttpSession(context);
+        final HttpSession session = getHttpSession(context, false);
 
         if (session == null) {
             return Optional.empty();
@@ -50,7 +46,7 @@ public class ServletSessionStore implements SessionStore {
 
     @Override
     public void set(final WebContext context, final String key, final Object value) {
-        final HttpSession session = getHttpSession(context);
+        final HttpSession session = getHttpSession(context, value != null);
 
         if (session != null) {
             if (value == null) {
@@ -63,7 +59,7 @@ public class ServletSessionStore implements SessionStore {
 
     @Override
     public boolean destroySession(WebContext context) {
-        final HttpSession session = getHttpSession(context);
+        final HttpSession session = getHttpSession(context, false);
 
         if (session != null) {
             session.invalidate();
@@ -76,12 +72,12 @@ public class ServletSessionStore implements SessionStore {
 
     @Override
     public Optional<Object> getTrackableSession(WebContext context) {
-        return Optional.ofNullable(getHttpSession(context));
+        return Optional.ofNullable(getHttpSession(context, false));
     }
 
     @Override
     public boolean renewSession(WebContext context) {
-        final HttpSession session = getHttpSession(context);
+        final HttpSession session = getHttpSession(context, false);
 
         if (session != null) {
             final Map<String, Object> attributes = new HashMap<>();
@@ -91,7 +87,7 @@ public class ServletSessionStore implements SessionStore {
 
             // let's recreate the session from zero, the previous becomes
             // generally unusable depending on the servlet implementation
-            final HttpSession newSession = getHttpSession(context);
+            final HttpSession newSession = getHttpSession(context, true);
             attributes.forEach(newSession::setAttribute);
 
             return true;
@@ -104,7 +100,7 @@ public class ServletSessionStore implements SessionStore {
     public Optional<SessionStore> buildFromTrackableSession(WebContext context, Object trackableSession) {
         return Optional.ofNullable(new ServletSessionStore() {
             @Override
-            public HttpSession getHttpSession(WebContext context) {
+            public HttpSession getHttpSession(WebContext context, boolean createSession) {
                 return (HttpSession) trackableSession;
             }
         });
@@ -112,7 +108,7 @@ public class ServletSessionStore implements SessionStore {
 
     @Override
     public Optional<String> getSessionId(WebContext context, boolean createSession) {
-        HttpSession session = getHttpSession(context);
+        HttpSession session = getHttpSession(context, createSession);
         return (session != null) ? Optional.of(session.getId()) : Optional.empty();
     }
 }
