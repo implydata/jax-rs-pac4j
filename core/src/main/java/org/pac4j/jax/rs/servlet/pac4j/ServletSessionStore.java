@@ -98,7 +98,7 @@ public class ServletSessionStore implements SessionStore {
 
     @Override
     public Optional<SessionStore> buildFromTrackableSession(WebContext context, Object trackableSession) {
-        return Optional.ofNullable(new ServletSessionStore() {
+        return Optional.of(new ServletSessionStore() {
             @Override
             public HttpSession getHttpSession(WebContext context, boolean createSession) {
                 return (HttpSession) trackableSession;
