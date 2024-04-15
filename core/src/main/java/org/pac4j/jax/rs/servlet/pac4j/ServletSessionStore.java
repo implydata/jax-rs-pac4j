@@ -28,7 +28,7 @@ public class ServletSessionStore implements SessionStore {
         this.httpSession = httpSession;
     }
 
-    public HttpSession getHttpSession(WebContext context, boolean createSession) {
+    public HttpSession getHttpSession(final WebContext context, final boolean createSession) {
         assert context instanceof ServletJaxRsContext;
         return ((ServletJaxRsContext) context).getRequest().getSession(createSession);
     }
@@ -58,7 +58,7 @@ public class ServletSessionStore implements SessionStore {
     }
 
     @Override
-    public boolean destroySession(WebContext context) {
+    public boolean destroySession(final WebContext context) {
         final HttpSession session = getHttpSession(context, false);
 
         if (session != null) {
@@ -71,12 +71,12 @@ public class ServletSessionStore implements SessionStore {
     }
 
     @Override
-    public Optional<Object> getTrackableSession(WebContext context) {
+    public Optional<Object> getTrackableSession(final WebContext context) {
         return Optional.ofNullable(getHttpSession(context, false));
     }
 
     @Override
-    public boolean renewSession(WebContext context) {
+    public boolean renewSession(final WebContext context) {
         final HttpSession session = getHttpSession(context, false);
 
         if (session != null) {
@@ -97,7 +97,7 @@ public class ServletSessionStore implements SessionStore {
     }
 
     @Override
-    public Optional<SessionStore> buildFromTrackableSession(WebContext context, Object trackableSession) {
+    public Optional<SessionStore> buildFromTrackableSession(final WebContext context, final  Object trackableSession) {
         return Optional.of(new ServletSessionStore() {
             @Override
             public HttpSession getHttpSession(WebContext context, boolean createSession) {
@@ -107,7 +107,7 @@ public class ServletSessionStore implements SessionStore {
     }
 
     @Override
-    public Optional<String> getSessionId(WebContext context, boolean createSession) {
+    public Optional<String> getSessionId(final WebContext context, final boolean createSession) {
         HttpSession session = getHttpSession(context, createSession);
         return (session != null) ? Optional.of(session.getId()) : Optional.empty();
     }
