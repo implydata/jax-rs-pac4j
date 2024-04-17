@@ -1,7 +1,12 @@
+# Notes about this Imply fork
+
+The Imply fork contains fixes for the Jersey2 `ServletSessionStore` which have not yet been published upstream. The goal is to get a patch landed upstream, and once a new build containing the fix is available in the public maven repositories, this fork can be deleted again. In the meantime, we'll use this fork to publish fixed artifacts to our private repository (Artifactory).
+
+---
+
 <p align="center">
   <img src="https://pac4j.github.io/pac4j/img/logo-jaxrs.png" width="300" />
 </p>
-
 
 The `jax-rs-pac4j` project is an **easy and powerful security library for JAX-RS web applications and web services** which supports authentication and authorization, but also logout and advanced features like session fixation and CSRF protection.
 It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. It's available under the Apache 2 license.
