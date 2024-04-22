@@ -46,9 +46,8 @@ jobs:
           distribution: ${{ env.DISTRIBUTION }}
           server-username: ${{ secrets.ARTIFACTORY_USER }}
           server-password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-      - name: Deploy to Sonatype
-        run: mvn --batch-mode -DskipTests deploy
+      - name: Deploy
         env:
-          MAVEN_USERNAME: ${{ secrets.ARTIFACTORY_USER }}
-          MAVEN_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-
+          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USER }}
+          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        run: mvn --batch-mode -DskipTests deploy -s ci-settings.xml
