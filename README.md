@@ -2,6 +2,12 @@
 
 The Imply fork contains fixes for the Jersey2 `ServletSessionStore` which have not yet been published upstream. The goal is to get a patch landed upstream, and once a new build containing the fix is available in the public maven repositories, this fork can be deleted again. In the meantime, we'll use this fork to publish fixed artifacts to our private repository (Artifactory).
 
+To publish to Artifactory, do the following:
+
+```sh
+ARTIFACTORY_USERNAME="" ARTIFACTORY_PASSWORD="" mvn --batch-mode -DskipTests deploy -s settings-deploy.xml
+```
+
 ---
 
 <p align="center">
@@ -40,10 +46,9 @@ These filters can be directly registered by hand, or instead, the following feat
 5) Generic JAX-RS Providers and Features activate the use of some of the filters on the JAX-RS implementation based on various conditions
 
 - The `Pac4JFeature` enables generic JAX-RS based pac4j functionality. The default configuration does not provide session handling (i.e., it will only work with direct clients). The feature registers the following default providers:
-    - `JaxRsContextFactoryProvider` to create the generic pac4j context for JAX-RS
-    - `JaxRsConfigProvider` to provide the pac4j configuration
-    - `JaxRsSessionStoreProvider` to provide the configured pac4j `SessionStore`
-
+  - `JaxRsContextFactoryProvider` to create the generic pac4j context for JAX-RS
+  - `JaxRsConfigProvider` to provide the pac4j configuration
+  - `JaxRsSessionStoreProvider` to provide the configured pac4j `SessionStore`
 
 - The `Pac4JSecurityFeature` enables annotation-based activation of the filters at the resource method level
 - The `Pac4JSecurityFilterFeature` activates a global filter that will be applied to every resources.
@@ -56,21 +61,21 @@ These filters can be directly registered by hand, or instead, the following feat
 
 - The `Pac4JGrizzlyFeature` provides session handling (and thus indirect clients support) by replacing the generic `JaxRsContextFactoryProvider` with `GrizzlyJaxRsContextFactoryProvider` (for Grizzly2 without Servlet support) and `JaxRsSessionStoreProvider` with `GrizzlySessionStoreProvider`.
 
-
 ## Usage
 
 ### 1) [Add the required dependencies](https://github.com/pac4j/jax-rs-pac4j/wiki/Dependencies)
 
-### 2) Define:
+### 2) Define
 
 ### - the [security configuration](https://github.com/pac4j/jax-rs-pac4j/wiki/Security-configuration)
+
 ### - the [callback configuration](https://github.com/pac4j/jax-rs-pac4j/wiki/Callback-configuration), only for web applications
+
 ### - the [logout configuration](https://github.com/pac4j/jax-rs-pac4j/wiki/Logout-configuration)
 
 ### 3) [Apply security](https://github.com/pac4j/jax-rs-pac4j/wiki/Apply-security)
 
 ### 4) [Get the authenticated user profiles](https://github.com/pac4j/jax-rs-pac4j/wiki/Get-the-authenticated-user-profiles)
-
 
 ## Versions
 
@@ -80,7 +85,6 @@ The [next version](https://github.com/pac4j/jax-rs-pac4j/wiki/Next-version) is u
 See the [release notes](https://github.com/pac4j/jax-rs-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/5.0.0/index.html) and the [jax-rs-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j.jax-rs/core/4.0.0).
 
 See the [migration guide](https://github.com/pac4j/jax-rs-pac4j/wiki/Migration-guide) as well.
-
 
 ## Need help?
 
